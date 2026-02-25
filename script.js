@@ -1,36 +1,29 @@
-function getUser() {
-    return new Promise(function(resolve) {
+function login(email, password) {
+    return new Promise(function(resolve, reject) {
         setTimeout(function() {
-            let usuario = { id: 5, nombre: "María" };
-            resolve(usuario);
-        }, 1500);
+            let emailCorrecto = "admin@correo.com";
+            let passCorrecta = "123456";
+
+            if (email === emailCorrecto && password === passCorrecta) {
+                resolve("Login exitoso");
+            } else {
+                reject("Credenciales incorrectas");
+            }
+        }, 2000);
     });
 }
 
-function getTasksByUser(userId) {
-    return new Promise(function(resolve) {
-        setTimeout(function() {
-            let tareas = [
-                { id: 1, titulo: "Comprar leche", userId: 5 },
-                { id: 2, titulo: "Estudiar Front", userId: 5 }
-            ];
-            resolve(tareas);
-        }, 1000);
-    });
-}
-
-async function loadUserTasks() {
+async function startLogin() {
     let resultado = document.getElementById("resultado");
-    resultado.innerHTML = "Cargando...";
+    resultado.innerHTML = "Verificando...";
+
+    let email = "admin@correo.com";
+    let password = "123456";
 
     try {
-        let usuario = await getUser();
-        let tareas = await getTasksByUser(usuario.id);
-
-        resultado.innerHTML =
-            "<strong>Usuario:</strong> " + usuario.nombre + "<br>" +
-            "<strong>Tareas:</strong> " + tareas.map(t => t.titulo).join(", ");
+        let mensaje = await login(email, password);
+        resultado.innerHTML = "✅ " + mensaje;
     } catch (error) {
-        resultado.innerHTML = "Error: " + error;
+        resultado.innerHTML = "❌ " + error;
     }
 }
